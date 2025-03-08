@@ -3,7 +3,7 @@ import { cn } from 'src/lib/utils';
 
 type IconName = keyof typeof ICON_PATHS;
 
-export default function LineIcon({
+export default function Icon({
   name,
   size,
   className,
