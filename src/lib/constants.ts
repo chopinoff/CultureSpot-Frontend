@@ -9,6 +9,7 @@ export const dropdownMenuSizes = {
   default: 'w-32',
   sm: 'w-24',
   lg: 'w-72',
+  fit: 'w-fit',
 } as const;
 
 export const dropdownFontSizes = {

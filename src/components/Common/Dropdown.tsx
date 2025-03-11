@@ -6,12 +6,14 @@ import {
   DropdownButtonSizes,
   dropdownFontSizes,
   DropdownFontSizes,
+  dropdownMenuSizes,
   DropdownMenuSizes,
 } from 'src/lib/constants';
 import Icon from '../Icons/Icon';
 import { cn } from 'src/lib/utils';
 
 type DropdownType = 'select' | 'link';
+type MenuAlign = 'left' | 'right';
 
 type DropdownProps = {
   type?: DropdownType;
@@ -20,6 +22,7 @@ type DropdownProps = {
   fontSize?: DropdownFontSizes;
   buttonSize?: DropdownButtonSizes;
   menuSize?: DropdownMenuSizes;
+  menuAlign?: MenuAlign;
   hideButtonBorder?: boolean;
   hideIcon?: boolean;
 };
@@ -31,14 +34,14 @@ export default function Dropdown({
   fontSize = 'default',
   buttonSize = 'default',
   menuSize = 'default',
+  menuAlign = 'right',
   hideButtonBorder = false,
   hideIcon = false,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(menuItems[0].label);
   const menuRef = useRef<HTMLDivElement>(null);
-  const menuWidthClass =
-    menuSize === 'sm' ? 'w-24' : menuSize === 'lg' ? 'w-72' : 'w-32';
+  const menuSizes = dropdownMenuSizes;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -85,8 +88,10 @@ export default function Dropdown({
       {isOpen && (
         <div
           className={cn(
-            'absolute right-0 z-10 mt-3 rounded-10 border bg-white shadow-lg',
-            menuWidthClass
+            'absolute z-10 mt-3 rounded-10 border bg-white shadow-lg',
+            menuAlign === 'right' ? 'right-0' : 'left-0',
+            // menuWidthClass
+            menuSizes[menuSize]
           )}
         >
           <ul className={'py-1'}>
