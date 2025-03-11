@@ -16,7 +16,7 @@ type DropdownType = 'select' | 'link';
 type MenuAlign = 'left' | 'right';
 
 type DropdownProps = {
-  type?: DropdownType;
+  type: DropdownType;
   buttonText?: string;
   menuItems: { label: string; onClick: () => void }[];
   fontSize?: DropdownFontSizes;
@@ -28,7 +28,7 @@ type DropdownProps = {
 };
 
 export default function Dropdown({
-  type = 'select',
+  type,
   buttonText,
   menuItems,
   fontSize = 'default',
