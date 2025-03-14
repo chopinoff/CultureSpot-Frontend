@@ -1,27 +1,63 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import {
-  dropdownButtonSizes,
-  DropdownButtonSizes,
-  dropdownFontSizes,
-  DropdownFontSizes,
-  dropdownMenuSizes,
-  DropdownMenuSizes,
-} from 'src/lib/constants';
 import Icon from '../Icons/Icon';
 import { cn } from 'src/lib/utils';
 
+const dropdownButtonWidths = {
+  default: 'w-32',
+  sm: 'w-24',
+  lg: 'w-48',
+  fit: 'w-fit',
+} as const;
+
+const dropdownButtonHeights = {
+  default: 'h-[42px]',
+  sm: 'h-[34px]',
+  fit: 'h-fit',
+} as const;
+
+const dropdownMenuWidths = {
+  default: 'w-32',
+  sm: 'w-24',
+  lg: 'w-48',
+  fit: 'w-fit',
+} as const;
+
+const dropdownMenuHeights = {
+  default: 'h-[42px]',
+  sm: 'h-[34px]',
+  lg: 'h-[46px]',
+  fit: 'h-fit',
+} as const;
+
+const dropdownFontSizes = {
+  default: 'text-body1',
+  sm: 'text-body2',
+};
+
+type DropdownButtonWidths = keyof typeof dropdownButtonWidths;
+type DropdownButtonHeights = keyof typeof dropdownButtonHeights;
+type DropdownMenuWidths = keyof typeof dropdownMenuWidths;
+type DropdownMenuHeights = keyof typeof dropdownMenuHeights;
+type DropdownFontSizes = keyof typeof dropdownFontSizes;
+
 type DropdownType = 'select' | 'link';
 type MenuAlign = 'left' | 'right';
+type MenuItem = {
+  label: React.ReactNode;
+  onClick: () => void;
+};
 
 type DropdownProps = {
   type: DropdownType;
   buttonText?: string;
-  menuItems: { label: string; onClick: () => void }[];
+  menuItems: MenuItem[];
   fontSize?: DropdownFontSizes;
-  buttonSize?: DropdownButtonSizes;
-  menuSize?: DropdownMenuSizes;
+  buttonWidth?: DropdownButtonWidths;
+  buttonHeight?: DropdownButtonHeights;
+  menuWidth?: DropdownMenuWidths;
+  menuHeight?: DropdownMenuHeights;
   menuAlign?: MenuAlign;
   hideButtonBorder?: boolean;
   hideIcon?: boolean;
@@ -32,8 +68,10 @@ export default function Dropdown({
   buttonText,
   menuItems,
   fontSize = 'default',
-  buttonSize = 'default',
-  menuSize = 'default',
+  buttonWidth = 'default',
+  buttonHeight = 'default',
+  menuWidth = 'default',
+  menuHeight = 'default',
   menuAlign = 'right',
   hideButtonBorder = false,
   hideIcon = false,
@@ -41,7 +79,6 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(menuItems[0].label);
   const menuRef = useRef<HTMLDivElement>(null);
-  const menuSizes = dropdownMenuSizes;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -64,16 +101,17 @@ export default function Dropdown({
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          'flex items-center justify-between rounded-10 bg-white px-3 py-2 hover:bg-gray-50',
+          'flex items-center justify-between rounded-10 bg-white px-2 py-1 hover:bg-gray-50',
           !hideButtonBorder && 'border',
-          dropdownButtonSizes[buttonSize]
+          dropdownButtonWidths[buttonWidth],
+          dropdownButtonHeights[buttonHeight]
         )}
       >
-        <p>
+        <div>
           {type === 'select'
             ? (isSelected === menuItems[0].label && buttonText) || isSelected
             : buttonText}
-        </p>
+        </div>
         {!hideIcon && (
           <div className='pl-2'>
             <Icon
@@ -90,14 +128,13 @@ export default function Dropdown({
           className={cn(
             'absolute z-10 mt-3 rounded-10 border bg-white shadow-lg',
             menuAlign === 'right' ? 'right-0' : 'left-0',
-            // menuWidthClass
-            menuSizes[menuSize]
+            dropdownMenuWidths[menuWidth]
           )}
         >
-          <ul className={'py-1'}>
-            {menuItems.map((item) => (
+          <ul className={cn('py-1')}>
+            {menuItems.map((item, idx) => (
               <li
-                key={item.label}
+                key={idx}
                 onClick={() => {
                   if (type === 'select') {
                     setIsSelected(item.label);
@@ -106,7 +143,8 @@ export default function Dropdown({
                   item.onClick();
                 }}
                 className={cn(
-                  'cursor-pointer bg-bg px-4 py-2 font-semibold text-text-sub hover:brightness-[0.98]',
+                  'flex cursor-pointer items-center justify-start bg-bg px-2 font-semibold text-text-sub hover:brightness-[0.98]',
+                  dropdownMenuHeights[menuHeight],
                   type === 'select' &&
                     isSelected === item.label &&
                     'bg-primary-main100 text-primary'
