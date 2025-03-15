@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, HTMLAttributes } from 'react';
 import Icon from '../Icons/Icon';
 import { cn } from 'src/lib/utils';
 
@@ -61,7 +61,7 @@ type DropdownProps = {
   menuAlign?: MenuAlign;
   hideButtonBorder?: boolean;
   hideIcon?: boolean;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 export default function Dropdown({
   type,
@@ -75,6 +75,7 @@ export default function Dropdown({
   menuAlign = 'right',
   hideButtonBorder = false,
   hideIcon = false,
+  ...rest
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(menuItems[0].label);
@@ -97,6 +98,7 @@ export default function Dropdown({
         dropdownFontSizes[fontSize]
       )}
       ref={menuRef}
+      {...rest}
     >
       <button
         onClick={() => setIsOpen((prev) => !prev)}
