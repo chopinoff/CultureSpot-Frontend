@@ -32,7 +32,7 @@ export default function Sidebar({
             className={cn(
               !isCollapsed && index === selectedIndex && 'bg-primary-main100',
               !isCollapsed && 'hover:bg-primary-main100',
-              'rounded-r-[50px] font-semibold text-text-sub'
+              'font-semibold text-text-sub'
             )}
           >
             <Link
