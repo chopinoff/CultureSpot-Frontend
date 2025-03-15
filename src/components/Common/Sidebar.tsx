@@ -1,34 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { ICON_PATHS } from 'src/constants/iconsPaths';
 import Icon from '../Icons/Icon';
-import { useState } from 'react';
+import { HTMLAttributes, useState } from 'react';
 import { cn } from 'src/lib/utils';
 import clsx from 'clsx';
 import { SidebarItem } from 'src/constants/sidebarItems';
-
-type IconName = keyof typeof ICON_PATHS;
 
 type SidebarProps = {
   sidebarItems: SidebarItem[];
   initialIndex?: null | number;
   isCollapsed?: boolean;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 export default function Sidebar({
-  sidebarItems = [
-    { iconName: 'PERFORMANCE', label: '공연 정보', url: 'performance' },
-  ],
+  sidebarItems,
   initialIndex = null,
   isCollapsed = false,
+  ...rest
 }: SidebarProps) {
   const [selectedIndex, setSeletedIndex] = useState<number | null>(
     initialIndex
   );
 
   return (
-    <aside className='w-fit'>
+    <aside className='h-lvh w-fit bg-bg' {...rest}>
       <ul className={cn(isCollapsed ? 'w-[90px]' : 'w-[200px]')}>
         {sidebarItems.map(({ iconName, label, url }, index) => (
           <li

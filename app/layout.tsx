@@ -1,10 +1,5 @@
 import '../styles/globals.css';
 import React from 'react';
-import Sidebar from 'src/components/Common/Sidebar';
-import {
-  GENERAL_SIDEBAR_ITEMS,
-  MYPAGE_SIDEBAR_ITEMS,
-} from 'src/constants/sidebarItems';
 
 export const metadata = {
   title: 'My Next.js App',
@@ -18,14 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body>
-        <Sidebar
-          isCollapsed
-          // sidebarItems={GENERAL_SIDEBAR_ITEMS}
-          sidebarItems={MYPAGE_SIDEBAR_ITEMS}
-        />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
